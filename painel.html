@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>PayPro - Configurar página de pagamentos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- JSZip (biblioteca necessária) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            color: #1e293b;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 16px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .logo i {
+            color: #6366f1;
+            font-size: 22px;
+        }
+
+        .btn-voltar {
+            color: #64748b;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 30px;
+            background: #f8fafc;
+        }
+
+        /* Container principal */
+        .main-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 16px;
+        }
+
+        /* Título da página */
+        .page-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Card de configuração */
+        .config-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        /* Grid de 2 colunas - responsivo */
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        /* Preview simplificado */
+        .preview-simple {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 20px;
+            position: sticky;
+            top: 90px;
+        }
+
+        .preview-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-weight: 600;
+            color: #475569;
+            font-size: 15px;
+        }
+
+        .preview-box {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        /* Logo preview */
+        .logo-preview {
+            width: 70px;
+            height: 70px;
+            background: #f1f5f9;
+            border-radius: 16px;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .store-name-preview {
+            text-align: center;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+
+        /* Métodos preview */
+        .method-preview {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .mpesa-bg { background: #00a85920; color: #00a859; }
+        .emola-bg { background: #ff6b0020; color: #ff6b00; }
+        .paypal-bg { background: #00308720; color: #003087; }
+
+        /* Formulário */
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0f172a;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            margin-bottom: 6px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
+        }
+
+        /* Upload area */
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-area:hover {
+            border-color: #6366f1;
+            background: #f8fafc;
+        }
+
+        .upload-area i {
+            font-size: 28px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        .upload-area p {
+            font-size: 14px;
+        }
+
+        /* Toggle métodos */
+        .method-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+
+        .method-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .method-info i {
+            font-size: 18px;
+        }
+
+        /* Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #6366f1;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* Campos de método */
+        .method-fields {
+            background: white;
+            border-radius: 12px;
+            padding: 14px;
+            margin-top: 8px;
+            margin-bottom: 16px;
+            display: none;
+            border: 1px solid #e2e8f0;
+        }
+
+        .method-fields.active {
+            display: block;
+        }
+
+        /* Barra de progresso */
+        .progress-container {
+            width: 100%;
+            background: #e2e8f0;
+            border-radius: 50px;
+            height: 8px;
+            margin: 20px 0 10px;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: #10b981;
+            border-radius: 50px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 14px;
+            color: #64748b;
+            text-align: center;
+            display: none;
+        }
+
+        /* Botão download */
+        .download-section {
+            margin-top: 30px;
+            text-align: center;
+            padding-top: 25px;
+            border-top: 1px solid #eef2f6;
+        }
+
+        .btn-download {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(16,185,129,0.2);
+            width: auto;
+            min-width: 250px;
+        }
+
+        .btn-download:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-download i {
+            font-size: 18px;
+        }
+
+        .btn-download:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .note {
+            margin-top: 16px;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        /* Logo nome (feedback) */
+        .logo-nome {
+            font-size: 12px;
+            color: #10b981;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Responsivo - Celular */
+        @media (max-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .preview-simple {
+                position: static;
+                margin-top: 20px;
+                order: 2;
+            }
+            
+            .config-card {
+                padding: 20px 16px;
+            }
+            
+            .btn-download {
+                width: 100%;
+                min-width: auto;
+                padding: 16px 20px;
+            }
+            
+            .header {
+                padding: 12px 16px;
+            }
+            
+            .logo {
+                font-size: 16px;
+            }
+            
+            .page-title h1 {
+                font-size: 22px;
+            }
+        }
+
+        /* Celular pequeno */
+        @media (max-width: 480px) {
+            .method-toggle {
+                flex-wrap: wrap;
+            }
+            
+            .method-info {
+                margin-bottom: 5px;
+            }
+            
+            .form-section-title {
+                font-size: 15px;
+            }
+            
+            .config-card {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="paypro.png" alt="PayPro" style="height: 32px; width: auto; display: block;">
+        </div>
+        <a href="index.html" class="btn-voltar">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </header>
+
+    <div class="main-container">
+        <div class="page-title">
+            <h1>Configurar página de pagamentos</h1>
+            <p>Preencha os dados abaixo. A pré-visualização atualiza em tempo real.</p>
+        </div>
+
+        <div class="config-card">
+            <div class="config-grid">
+                <!-- COLUNA ESQUERDA: FORMULÁRIO -->
+                <div>
+                    <!-- Identidade Visual -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-store" style="color: #6366f1;"></i>
+                            Identidade da loja
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Logo da loja</label>
+                            <div class="upload-area" onclick="document.getElementById('logoInput').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p style="font-weight: 500;">Clique para fazer upload</p>
+                                <p style="font-size: 12px; color: #94a3b8;">PNG ou JPG recomendado</p>
+                            </div>
+                            <input type="file" id="logoInput" accept="image/*" style="display: none;" onchange="atualizarLogoPreview(this)">
+                            <div class="logo-nome" id="logoNome"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Nome da loja / marca</label>
+                            <input type="text" class="form-control" id="nomeLoja" value="Maria Digital Store" oninput="atualizarPreview()" placeholder="Ex: Maria Digital Store">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cor principal</label>
+                            <input type="color" class="form-control" id="corPrincipal" value="#6366f1" oninput="atualizarPreview()" style="height: 50px; padding: 5px;">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Cor dos textos</label>
+                            <input type="color" class="form-control" id="corTexto" value="#1e293b" oninput="atualizarPreview()" style="height: 50px; padding: 5px;">
+                        </div>
+                    </div>
+
+                    <!-- Métodos de Pagamento -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-credit-card" style="color: #6366f1;"></i>
+                            Métodos de pagamento
+                        </div>
+
+                        <!-- M-Pesa -->
+                        <div class="method-toggle">
+                            <div class="method-info">
+                                <i class="fas fa-mobile-alt" style="color: #00a859;"></i>
+                                <span style="font-weight: 500;">M-Pesa</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="mpesaAtivo" checked onchange="toggleMetodo('mpesa')">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="method-fields" id="mpesaFields">
+                            <div class="form-group">
+                                <label>Número M-Pesa</label>
+                                <input type="text" class="form-control" id="mpesaNumero" value="84 123 4567" oninput="atualizarPreview()" placeholder="Ex: 84 123 4567">
+                            </div>
+                            <div class="form-group">
+                                <label>Nome do titular</label>
+                                <input type="text" class="form-control" id="mpesaTitular" value="Maria Silva" oninput="atualizarPreview()" placeholder="Ex: Maria Silva">
+                            </div>
+                        </div>
+
+                        <!-- e-Mola -->
+                        <div class="method-toggle">
+                            <div class="method-info">
+                                <i class="fas fa-mobile-alt" style="color: #ff6b00;"></i>
+                                <span style="font-weight: 500;">e-Mola</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="emolaAtivo" onchange="toggleMetodo('emola')">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="method-fields" id="emolaFields">
+                            <div class="form-group">
+                                <label>Número e-Mola</label>
+                                <input type="text" class="form-control" id="emolaNumero" value="85 987 6543" oninput="atualizarPreview()" placeholder="Ex: 85 987 6543">
+                            </div>
+                            <div class="form-group">
+                                <label>Nome do titular</label>
+                                <input type="text" class="form-control" id="emolaTitular" value="Maria Silva" oninput="atualizarPreview()" placeholder="Ex: Maria Silva">
+                            </div>
+                        </div>
+
+                        <!-- PayPal -->
+                        <div class="method-toggle">
+                            <div class="method-info">
+                                <i class="fab fa-paypal" style="color: #003087;"></i>
+                                <span style="font-weight: 500;">PayPal</span>
+                            </div>
+                            <label class="switch">
+                                <input type="checkbox" id="paypalAtivo" onchange="toggleMetodo('paypal')">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="method-fields" id="paypalFields">
+                            <div class="form-group">
+                                <label>E-mail do PayPal</label>
+                                <input type="email" class="form-control" id="paypalEmail" value="maria@email.com" oninput="atualizarPreview()" placeholder="Ex: maria@email.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Textos e Mensagens -->
+                    <div class="form-section">
+                        <div class="form-section-title">
+                            <i class="fas fa-comment" style="color: #6366f1;"></i>
+                            Mensagens
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mensagem de instrução</label>
+                            <textarea class="form-control" id="textoInstrucao" rows="2" oninput="atualizarPreview()">Após o pagamento, anexe o comprovativo abaixo.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Mensagem de agradecimento</label>
+                            <textarea class="form-control" id="textoAgradecimento" rows="2" oninput="atualizarPreview()">Obrigado! Recebemos seu comprovativo.</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Tempo de verificação</label>
+                            <select class="form-control" id="tempoVerificacao" onchange="atualizarPreview()">
+                                <option value="15 minutos">Até 15 minutos</option>
+                                <option value="30 minutos" selected>Até 30 minutos</option>
+                                <option value="1 hora">Até 1 hora</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>WhatsApp para contato</label>
+                            <input type="text" class="form-control" id="whatsappNumero" value="+258841234567" oninput="atualizarPreview()" placeholder="Ex: +258841234567">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- COLUNA DIREITA: PREVIEW -->
+                <div>
+                    <div class="preview-simple">
+                        <div class="preview-title">
+                            <i class="fas fa-eye"></i>
+                            Pré-visualização em tempo real
+                        </div>
+                        
+                        <div class="preview-box" id="previewBox">
+                            <!-- Logo -->
+                            <div class="logo-preview" id="previewLogo">
+                                <i class="fas fa-store" style="color: #94a3b8; font-size: 32px;"></i>
+                            </div>
+                            
+                            <!-- Nome da loja -->
+                            <div class="store-name-preview" id="previewNomeLoja" style="color: #1e293b;">
+                                Maria Digital Store
+                            </div>
+                            
+                            <!-- Instrução -->
+                            <div style="font-size: 14px; color: #64748b; margin-bottom: 20px; text-align: center;" id="previewInstrucao">
+                                Após o pagamento, anexe o comprovativo abaixo.
+                            </div>
+                            
+                            <!-- Métodos de pagamento -->
+                            <div id="previewMetodos">
+                                <!-- M-Pesa (dinâmico) -->
+                                <div class="method-preview" id="previewMpesa">
+                                    <div class="method-icon mpesa-bg">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">M-Pesa</div>
+                                        <div style="font-size: 13px; color: #475569;" id="previewMpesaDetalhes">84 123 4567 (Maria Silva)</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- e-Mola (dinâmico) -->
+                                <div class="method-preview" id="previewEmola" style="display: none;">
+                                    <div class="method-icon emola-bg">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">e-Mola</div>
+                                        <div style="font-size: 13px; color: #475569;" id="previewEmolaDetalhes"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- PayPal (dinâmico) -->
+                                <div class="method-preview" id="previewPaypal" style="display: none;">
+                                    <div class="method-icon paypal-bg">
+                                        <i class="fab fa-paypal"></i>
+                                    </div>
+                                    <div>
+                                        <div style="font-weight: 600;">PayPal</div>
+                                        <div style="font-size: 13px; color: #475569;" id="previewPaypalDetalhes"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Simulação do formulário -->
+                            <div style="margin-top: 20px;">
+                                <div style="background: #f1f5f9; height: 45px; border-radius: 10px; margin-bottom: 10px;"></div>
+                                <div style="background: #f1f5f9; height: 45px; border-radius: 10px; margin-bottom: 15px;"></div>
+                                <div style="background: #6366f1; height: 50px; border-radius: 10px;" id="previewBotao"></div>
+                            </div>
+                            
+                            <!-- Rodapé -->
+                            <div style="margin-top: 20px; text-align: center; font-size: 13px; color: #475569;" id="previewRodape">
+                                Obrigado! Verificaremos em até 30 minutos.
+                                <div style="margin-top: 10px;">
+                                    <i class="fab fa-whatsapp" style="color: #25D366;"></i> Falar no WhatsApp
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Barra de Progresso -->
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText"></div>
+
+            <!-- SEÇÃO DE ENVIO -->
+            <div class="download-section">
+                <button class="btn-download" onclick="enviarParaBackend()" id="btnEnviar">
+                    <i class="fas fa-cloud-upload-alt"></i> Enviar site para aprovação
+                </button>
+                <p class="note">
+                    <i class="fas fa-info-circle"></i>
+                    Seu site será enviado para nossa equipe. Em breve entraremos em contato pelo WhatsApp.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Arquivo JavaScript separado -->
+    <script src="painel.js"></script>
+</body>
+</html>
