@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GOJU OFC - Pagamento</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: #f0f0f0;
+            border-radius: 16px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .logo img { max-width: 100%; }
+        .store-name {
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .instruction {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            font-size: 15px;
+        }
+        .file-area {
+            border: 2px dashed #ddd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 16px;
+        }
+        .btn-whatsapp {
+            width: 100%;
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 13px;
+        }
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 14px;
+            display: none;
+        }
+        .toast.show { display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- LOGO -->
+            <div class="logo">
+                <i class="fas fa-store" style="color: #999; font-size: 32px;"></i>
+            </div>
+            
+            <h1 class="store-name">GOJU OFC</h1>
+            <div class="instruction">Após o pagamento, anexe o comprovativo abaixo.</div>
+            
+            <!-- M-PESA -->
+            
+            <div style="background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                    <div style="width: 40px; height: 40px; background: #00a85920; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #00a859;">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <span style="font-weight: 700;">M-PESA</span>
+                    <span style="background: #1e293b; color: white; padding: 2px 8px; border-radius: 20px; font-size: 11px;">*150#</span>
+                </div>
+                
+                <div onclick="copiarNumero('856023814', 'SHADIA AISSA')" style="background: white; border-radius: 12px; padding: 12px; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div>
+                        <div style="font-weight: 700;">856023814</div>
+                        <div style="font-size: 12px; color: #666;">SHADIA AISSA</div>
+                    </div>
+                    <div style="color: #6366f1;"><i class="fas fa-copy"></i></div>
+                </div>
+                
+                <button onclick="window.location.href='tel:*150%23'" style="width: 100%; background: #1e293b; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600;">
+                    <i class="fas fa-phone-alt"></i> Pagar com M-PESA
+                </button>
+            </div>
+            
+            
+            <!-- E-MOLA -->
+            
+            <div style="background: #f8fafc; border-radius: 16px; padding: 16px; margin-bottom: 16px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                    <div style="width: 40px; height: 40px; background: #ff6b0020; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #ff6b00;">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <span style="font-weight: 700;">E-MOLA</span>
+                    <span style="background: #1e293b; color: white; padding: 2px 8px; border-radius: 20px; font-size: 11px;">*898#</span>
+                </div>
+                
+                <div onclick="copiarNumero('871852380', 'SHADIA AISSA')" style="background: white; border-radius: 12px; padding: 12px; border: 1px solid #ddd; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                    <div>
+                        <div style="font-weight: 700;">871852380</div>
+                        <div style="font-size: 12px; color: #666;">SHADIA AISSA</div>
+                    </div>
+                    <div style="color: #6366f1;"><i class="fas fa-copy"></i></div>
+                </div>
+                
+                <button onclick="window.location.href='tel:*898%23'" style="width: 100%; background: #1e293b; color: white; border: none; padding: 14px; border-radius: 12px; font-weight: 600;">
+                    <i class="fas fa-phone-alt"></i> Pagar com E-MOLA
+                </button>
+            </div>
+            
+            
+            <!-- FORMULÁRIO -->
+            <form id="formComprovativo" onsubmit="event.preventDefault()">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="nomeCliente" placeholder="Seu nome" required>
+                </div>
+                <div class="form-group">
+                    <input type="number" class="form-control" id="valorPago" placeholder="Valor pago (MT)" required>
+                </div>
+                <div class="file-area" onclick="document.getElementById('fileInput').click()">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p style="margin-top: 5px;">Clique para anexar o comprovativo</p>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;" required>
+                </div>
+                
+                <button type="button" class="btn-whatsapp" onclick="enviarComprovativo('258835251927')">
+                    <i class="fab fa-whatsapp"></i> Enviar comprovativo
+                </button>
+            </form>
+            
+            <div class="footer">
+                <p>Obrigado! Recebemos seu comprovativo. Verificaremos em até 1 hora.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast"></div>
+    
+    <script>
+        function copiarNumero(numero, titular) {
+            navigator.clipboard.writeText(numero + ' (' + titular + ')');
+            mostrarToast('✅ Número copiado');
+        }
+        
+        function enviarComprovativo(numeroVendedor) {
+            const nome = document.getElementById('nomeCliente').value || 'Cliente';
+            const valor = document.getElementById('valorPago').value || 'Valor';
+            const fileInput = document.getElementById('fileInput');
+            
+            if (!fileInput.files || fileInput.files.length === 0) {
+                mostrarToast('❌ Anexe o comprovativo');
+                return;
+            }
+            
+            const msg = '🛒 PAGAMENTO\nCliente: ' + nome + '\nValor: ' + valor + ' MT';
+            window.open('https://wa.me/' + numeroVendedor.replace('+', '') + '?text=' + encodeURIComponent(msg), '_blank');
+        }
+        
+        function mostrarToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+    </script>
+</body>
+</html>
