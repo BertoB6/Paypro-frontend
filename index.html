@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayPro - Página profissional de confirmação de pagamentos</title>
+    <!-- Fontes e ícones -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            padding: 24px 0;
+            border-bottom: 1px solid #eef2f6;
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: #6366f1;
+            font-size: 28px;
+        }
+
+        .btn-outline {
+            border: 1px solid #e2e8f0;
+            background: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #1e293b;
+        }
+
+        .btn-outline:hover {
+            border-color: #6366f1;
+            background: #f8fafc;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 0 40px;
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            color: #0f172a;
+        }
+
+        .hero h1 span {
+            color: #6366f1;
+            background: #e0e7ff;
+            padding: 0 8px;
+            border-radius: 12px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: #475569;
+            margin-bottom: 30px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6366f1;
+        }
+
+        .stat-text h3 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .stat-text p {
+            font-size: 14px;
+            color: #64748b;
+            margin: 0;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-block;
+            text-decoration: none;
+            box-shadow: 0 10px 20px rgba(99,102,241,0.2);
+        }
+
+        .btn-primary:hover {
+            background: #4f52e0;
+            transform: translateY(-2px);
+        }
+
+        .hero-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image-card {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .hero-image-card .mpesa-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+        }
+
+        /* Problemas */
+        .problems {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .section-title {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 50px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .section-title p {
+            font-size: 18px;
+            color: #475569;
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+        }
+
+        .problem-icon {
+            width: 60px;
+            height: 60px;
+            background: #fee2e2;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: #ef4444;
+            font-size: 24px;
+        }
+
+        .problem-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .problem-card p {
+            color: #64748b;
+        }
+
+        /* Como funciona */
+        .how-it-works {
+            padding: 80px 0;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background: #e0e7ff;
+            color: #6366f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        /* Planos */
+        .plans {
+            padding: 80px 0;
+            background: #f8fafc;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1000px;
+            margin: 50px auto 0;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .plan-card.popular {
+            border: 2px solid #6366f1;
+            transform: scale(1.05);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #6366f1;
+            color: white;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .plan-price {
+            margin: 20px 0;
+        }
+
+        .plan-price .value {
+            font-size: 48px;
+            font-weight: 700;
+        }
+
+        .plan-price .period {
+            color: #64748b;
+        }
+
+        .plan-features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .plan-features li {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .plan-features i {
+            color: #10b981;
+        }
+
+        .btn-plan {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-plan:hover {
+            background: #f8fafc;
+            border-color: #6366f1;
+        }
+
+        .btn-plan.popular {
+            background: #6366f1;
+            color: white;
+            border: none;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 0;
+            border-top: 1px solid #eef2f6;
+            text-align: center;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .hero .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .problems-grid, .steps, .plans-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .plan-card.popular {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+    <div class="container">
+        <!-- LOGO: APENAS IMAGEM (sem ícone, sem texto) -->
+        <div class="logo">
+            <img src="paypro.png" alt="PayPro" style="height: 32px; width: auto; display: block;">
+        </div>
+        <a href="painel.html" class="btn-outline">
+            <i class="fas fa-cog"></i> criar agora
+        </a>
+    </div>
+</header>
+
+    <section class="hero">
+        <div class="container">
+            <div>
+                <h1>
+                    Faça seus clientes amarem
+                    <span>comprar consigo</span>
+                </h1>
+                <p>
+                    Crie uma página de pagamento em 2 minutos. 
+                    Aumente a confiança dos seus clientes e pare de perder vendas.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h3>M-Pesa</h3>
+                            <p>& E-Mola</p>
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-text">
+                            <h3>+08</h3>
+                            <p>vendedores</p>
+                        </div>
+                    </div>
+                </div>
+                <a href="painel.html" class="btn-primary">
+                    <i class="fas fa-magic"></i> Criar minha página agora
+                </a>
+                <p style="margin-top: 20px; font-size: 14px; color: #94a3b8;">
+                    <i class="fas fa-clock"></i> 2 minutos • Sem cartão de crédito
+                </p>
+            </div>
+            <div class="hero-image">
+                <div class="hero-image-card">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; background: white; border-radius: 10px;"></div>
+                        <div>
+                            <div style="font-weight: 600;">Hulk Store</div>
+                            <div style="font-size: 12px; opacity: 0.8;">Online Store</div>
+                        </div>
+                    </div>
+                    <div class="mpesa-line">
+                        <i class="fas fa-mobile-alt"></i>
+                        <div>
+                            <div><strong>M-Pesa:</strong>84 123 4567 </div>
+                            <div style="font-size: 12px;">Maria Silva</div>
+                        </div>
+                    </div>
+                    <div style="background: white; border-radius: 10px; padding: 15px; margin-top: 15px;">
+                        <div style="color: black; font-size: 12px; margin-bottom: 10px;">Enviar comprovativo</div>
+                        <div style="background: #f1f5f9; height: 40px; border-radius: 8px; margin-bottom: 10px;"></div>
+                        <div style="background: #6366f1; height: 45px; border-radius: 8px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="problems">
+        <div class="container">
+            <div class="section-title">
+              
+                <p>Se você vende no WhatsApp, Instagram ou Facebook, já passou por isso:</p>
+            </div>
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3>Comprovativos perdidos</h3>
+                    <p>Prints misturados com conversas, fotos e memes. Difícil organizar e conferir.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Demora na resposta</h3>
+                    <p>Cliente esperando, você procurando o comprovativo. Venda perdida.</p>
+                </div>
+                <div class="problem-card">
+                    <div class="problem-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Falta de confiança</h3>
+                    <p>Página amadora transmite insegurança. Cliente desiste de comprar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>Como funciona</h2>
+                <p>Simples, rápido e profissional</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Configure você mesmo</h3>
+                    <p>Adicione sua logo, cores e métodos de pagamento em 2 minutos</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Compartilhe</h3>
+                    <p>Envie o link da sua página para o cliente para confirmar a venda</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Receba</h3>
+                    <p>Cliente envia o comprovativo organizado. Você confirma rápido.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="plans">
+    <div class="container">
+        <div class="section-title">
+            <h2>Planos para todos os vendedores</h2>
+            <p>Comece com 25MT e pare de perder vendas</p>
+        </div>
+        <div class="plans-grid">
+            <div class="plan-card">
+                <h3>Básico</h3>
+                <div class="plan-price">
+                    <span class="value">25MT</span>
+                    <span class="period">/15 dias</span>
+                </div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> 2 método de pagamento</li>
+                    <li><i class="fas fa-check"></i> página pronta para usar</li>
+                    <li><i class="fas fa-check"></i> Usa domínio padrão da Paypro</li>
+                    <li><i class="fas fa-times" style="color: #ef4444;"></i> Exibe a marca PayPro</li>
+                </ul>
+                <!-- LINK ATIVO: Abre painel.html -->
+                <button class="btn-plan" onclick="window.location.href='painel.html'">Começar agora</button>
+                <!-- LINK COMENTADO (para pagamento futuro): <button class="btn-plan" onclick="window.location.href='https://seudominio.com/pagamento'">Começar agora</button> -->
+            </div>
+            <div class="plan-card popular">
+                <div class="popular-badge">Mais escolhido</div>
+                <h3>Pro</h3>
+                <div class="plan-price">
+                    <span class="value">50MT</span>
+                    <span class="period">/15 dias</span>
+                </div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> 3 métodos de pagamento</li>
+                    <li><i class="fas fa-check"></i> Remoção da marca Paypro</li>
+                    <li><i class="fas fa-check"></i> Edição completa da página</li>
+                    <li><i class="fas fa-check"></i> Suporta alto volume de pagamentos</li>
+                </ul>
+                <!-- LINK ATIVO: Abre painel.html -->
+                <button class="btn-plan popular" onclick="window.location.href='painel.html'">Começar agora</button>
+                <!-- LINK COMENTADO (para pagamento futuro): <button class="btn-plan popular" onclick="window.location.href='https://seudominio.com/pagamento'">Começar agora</button> -->
+            </div>
+            <div class="plan-card">
+                <h3>Premium</h3>
+                <div class="plan-price">
+                    <span class="value">80MT</span>
+                    <span class="period">/mês</span>
+                </div>
+                <ul class="plan-features">
+                    <li><i class="fas fa-check"></i> Todos métodos de pagamentos</li>
+                    <li><i class="fas fa-check"></i> Comprovativos ilimitados</li>
+                    <li><i class="fas fa-check"></i> Link personalizado exclusivo</li>
+                    <li><i class="fas fa-check"></i> Layouts exclusivos</li>
+                </ul>
+                <!-- LINK ATIVO: Abre painel.html -->
+                <button class="btn-plan" onclick="window.location.href='painel.html'">Começar agora</button>
+                <!-- LINK COMENTADO (para pagamento futuro): <button class="btn-plan" onclick="window.location.href='https://seudominio.com/pagamento'">Começar agora</button> -->
+            </div>
+        </div>
+    </div>
+</section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© 2026 PayPro - Transformando vendedores simples mais profissionais</p>
+        </div>
+    </footer>
+</body>
+</html>
